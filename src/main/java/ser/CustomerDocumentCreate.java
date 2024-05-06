@@ -55,6 +55,8 @@ public class CustomerDocumentCreate extends UnifiedAgent {
                 this.helper = new ProcessHelper(Utils.session);
                 log.info("----CustomerDocumentCreate Agent Started -----:" + mainDocument.getID());
                 this.archivingDoc(mainDocument);
+                mainDocument.setDescriptorValue("ObjectState","New");
+                mainDocument.commit();
                 log.info("----CustomerDocumentCreate Agent Finished -----");
             } catch (Exception e) {
                 log.error("Exception Caught");
