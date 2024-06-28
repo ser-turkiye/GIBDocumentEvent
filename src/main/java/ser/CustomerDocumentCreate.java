@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CustomerDocumentCreate extends UnifiedAgent {
@@ -21,6 +23,8 @@ public class CustomerDocumentCreate extends UnifiedAgent {
     private ITask mainTask;
     private String uniqueId;
     String tempPath = "";
+    String docDate = "";
+    String strDate = "";
     String ownerID = "";
     IUser owner = null;
     List<String> docs = new ArrayList<>();
@@ -55,6 +59,22 @@ public class CustomerDocumentCreate extends UnifiedAgent {
                 this.helper = new ProcessHelper(Utils.session);
                 log.info("----CustomerDocumentCreate Agent Started -----:" + mainDocument.getID());
                 this.archivingDoc(mainDocument);
+
+                docDate = mainDocument.getDescriptorValue(Conf.Descriptors.DocumentDate);
+                strDate = mainDocument.getDescriptorValue(Conf.Descriptors.StoredDate);
+                if(docDate == null || docDate.isEmpty()){
+                    Date date = new Date();
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                    String strDate = formatter.format(date);
+                    mainDocument.setDescriptorValue(Conf.Descriptors.DocumentDate, strDate);
+                }
+                if(strDate == null || strDate.isEmpty()){
+                    Date date = new Date();
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd hh:mm:ss");
+                    String strDate = formatter.format(date);
+                    mainDocument.setDescriptorValue(Conf.Descriptors.StoredDate, strDate);
+                }
+
                 mainDocument.setDescriptorValue("ObjectState","New");
                 mainDocument.commit();
                 log.info("----CustomerDocumentCreate Agent Finished -----");

@@ -30,6 +30,8 @@ public class Conf {
     }
     public static class Descriptors{
         public static final String Name = "ObjectName";
+        public static final String DocumentDate = "_DocumentDate";
+        public static final String StoredDate = "_StoredDate";
         public static final String Categories = "Categories";
         public static final String AccountNumber = "_AccountNumber";
         public static final String CIF = "_CIF";
